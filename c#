@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    echo "ERROR: Falta especificar archivo a compilar 'c# <archivo.cs>'"
+    exit 1
+fi
+
+ARCHIVO="$1"
+ARGS=""
+
+if [ $# -ge 1 ]; then
+ARGS="$2 $3 $4 $5 $6 $7 $8 $9"
+fi
+
+if [ ! -f "$ARCHIVO" ]; then
+    echo "El archivo $ARCHIVO no existe."
+    exit 1
+fi
+
+# Compila el archivo .cs con mcs
+echo "Compilando $ARCHIVO..."
+mcs "$ARCHIVO"
+if [ $? -ne 0 ]; then
+    echo "Error al compilar $ARCHIVO."
+    exit 1
+fi
+clear
+
+# Ejecuta el archivo compilado con mono
+EXE="${ARCHIVO%.cs}.exe"
+mono "$EXE" "$ARGS"
+
